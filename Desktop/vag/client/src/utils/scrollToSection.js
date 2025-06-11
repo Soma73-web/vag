@@ -1,24 +1,34 @@
 export const scrollToSection = (id, callback) => {
-  const el = document.getElementById(id);
-  if (el) {
-    const headerHeight = 96; // Height of fixed header
-    const elementPosition = el.offsetTop - headerHeight - 20; // Extra padding
+  // Function to attempt scrolling with retries
+  const attemptScroll = (attempts = 0) => {
+    const el = document.getElementById(id);
+    if (el) {
+      const headerHeight = 96; // Height of fixed header
+      const elementPosition = el.offsetTop - headerHeight - 20; // Extra padding
 
-    window.scrollTo({
-      top: elementPosition,
-      behavior: "smooth",
-    });
+      window.scrollTo({
+        top: elementPosition,
+        behavior: "smooth",
+      });
 
-    // Call callback if provided (useful for analytics or state updates)
-    if (callback) {
-      setTimeout(callback, 600); // After scroll animation completes
+      // Call callback if provided (useful for analytics or state updates)
+      if (callback) {
+        setTimeout(callback, 600); // After scroll animation completes
+      }
+
+      // Update URL hash without jumping (only if different from current)
+      if (window.location.hash !== `#${id}` && window.history.pushState) {
+        window.history.pushState(null, null, `#${id}`);
+      }
+    } else if (attempts < 5) {
+      // Retry if element not found yet (may still be loading)
+      setTimeout(() => attemptScroll(attempts + 1), 200);
+    } else {
+      console.warn(`Element with id "${id}" not found after multiple attempts`);
     }
+  };
 
-    // Update URL hash without jumping (only if different from current)
-    if (window.location.hash !== `#${id}` && window.history.pushState) {
-      window.history.pushState(null, null, `#${id}`);
-    }
-  }
+  attemptScroll();
 };
 
 // Alternative function for smooth scrolling with offset

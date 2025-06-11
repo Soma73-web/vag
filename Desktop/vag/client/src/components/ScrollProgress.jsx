@@ -19,7 +19,7 @@ const ScrollProgress = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 w-full h-1 bg-gray-200 z-50 transition-opacity duration-300 ${
+      className={`fixed top-0 left-0 w-full h-1 bg-gray-200 z-[55] transition-opacity duration-300 ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
     >
