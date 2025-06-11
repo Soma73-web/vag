@@ -17,7 +17,7 @@ const DivineLoader = ({ message = "Loading..." }) => {
       img.onerror = () => {
         // If image doesn't exist, keep using placeholder
         console.log(
-          "Custom goddess image not found at /src/assets/logo.png, using placeholder",
+          "Custom goddess image not found at /src/assets/goddess-parvathi.jpg, using placeholder",
         );
       };
       // Try to load from public folder first
