@@ -55,7 +55,7 @@ const Results = () => {
   };
 
   return (
-    <section id="results" className="pt-28 pb-16 bg-white scroll-mt-24">
+    <section id="results" className="py-20 bg-white scroll-mt-24">
       <div className="max-w-6xl mx-auto px-4">
         {/* ───── New Styled Heading ───── */}
         <div className="text-center mb-10">
