@@ -1,29 +1,30 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Header from './components/Header';
-import Footer from './components/Footer';
-import ScrollToHash from './components/ScrollToHash';
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import ScrollToHash from "./components/ScrollToHash";
 
 // Homepage Components
-import HomeSlider from './components/HomeSlider';
-import Hero from './components/Hero';
-import Courses from './components/Courses';
-import Features from './components/Features';
-import Results from './components/Results';
-import Gallery from './components/Gallery';
-import Testimonials from './components/Testimonials';
+import HomeSlider from "./components/HomeSlider";
+import Hero from "./components/Hero";
+import Courses from "./components/Courses";
+import Features from "./components/Features";
+import Results from "./components/Results";
+import Gallery from "./components/Gallery";
+import Testimonials from "./components/Testimonials";
+import Events from "./components/Events";
 
 // Other Pages
-import GallerySection from './components/GallerySection';
-import DownloadSection from './components/DownloadSection';
-import DirectorsMessage from './pages/DirectorsMessage';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import ContactPage from './pages/ContactPage';
-import AdminPanel from './pages/AdminPanel';
-import AdminLogin from './pages/AdminLogin';
-import About from './pages/About';
-import ResultsPage from './pages/ResultsPage';
+import GallerySection from "./components/GallerySection";
+import DownloadSection from "./components/DownloadSection";
+import DirectorsMessage from "./pages/DirectorsMessage";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import ContactPage from "./pages/ContactPage";
+import AdminPanel from "./pages/AdminPanel";
+import AdminLogin from "./pages/AdminLogin";
+import About from "./pages/About";
+import ResultsPage from "./pages/ResultsPage";
 
 function App() {
   return (
