@@ -46,13 +46,13 @@ const Events = () => {
         </div>
 
         {loading ? (
-          <div className="text-center py-8">
-            <p className="text-gray-500">Loading events...</p>
-          </div>
+          <LoadingSpinner message="Our team is preparing exciting events for you..." />
         ) : events.length === 0 ? (
-          <div className="text-center py-8">
-            <p className="text-gray-500">No events available</p>
-          </div>
+          <EmptyState
+            icon="🎉"
+            title="Events Coming Soon"
+            message="Stay tuned for exciting events and activities. Our team is planning something amazing!"
+          />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {events.map((event) => (
