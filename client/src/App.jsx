@@ -25,6 +25,8 @@ import AdminPanel from "./pages/AdminPanel";
 import AdminLogin from "./pages/AdminLogin";
 import About from "./pages/About";
 import ResultsPage from "./pages/ResultsPage";
+import StudentLogin from "./pages/StudentLogin";
+import StudentDashboard from "./pages/StudentDashboard";
 
 function App() {
   return (
