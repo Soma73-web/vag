@@ -25,13 +25,34 @@ const Header = () => {
     { name: "Testimonials", path: "/", scrollTo: "testimonials" },
   ];
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setAboutDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const handleNavClick = (link) => {
     setMenuOpen(false);
+    setAboutDropdownOpen(false);
+    setMobileAboutOpen(false);
     if (link.scrollTo) {
       navigate(`/#${link.scrollTo}`);
     } else {
       navigate(link.path);
     }
+  };
+
+  const handleAboutDropdownClick = (item) => {
+    setAboutDropdownOpen(false);
+    handleNavClick(item);
   };
 
   return (
