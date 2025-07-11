@@ -24,12 +24,17 @@ fs.readdirSync(__dirname)
   .forEach((file) => {
     const modelFile = require(path.join(__dirname, file));
 
-    // Handle both function exports and class exports
+    // Handle different export patterns
     let model;
     if (typeof modelFile === "function") {
+      // Function export pattern: module.exports = (sequelize, DataTypes) => { ... }
       model = modelFile(sequelize, Sequelize.DataTypes);
     } else if (modelFile.default && typeof modelFile.default === "function") {
+      // ES6 default export function
       model = modelFile.default(sequelize, Sequelize.DataTypes);
+    } else if (modelFile && typeof modelFile === "object" && modelFile.name) {
+      // Direct model export pattern: module.exports = ModelInstance
+      model = modelFile;
     } else {
       console.error(`Invalid model export in ${file}`);
       return;
