@@ -12,14 +12,17 @@ const Header = () => {
 
   const navLinks = [
     { name: "Home", path: "/" },
-    { name: "Director's Message", path: "/directors-message" },
     { name: "Courses", path: "/", scrollTo: "courses" },
     { name: "Results", path: "/results" },
     { name: "Gallery", path: "/gallery" },
     { name: "Downloads", path: "/downloads" },
-    { name: "Testimonials", path: "/", scrollTo: "testimonials" },
     { name: "Contact", path: "/contact" },
+  ];
+
+  const aboutDropdownItems = [
     { name: "About Us", path: "/about" },
+    { name: "Director's Message", path: "/directors-message" },
+    { name: "Testimonials", path: "/", scrollTo: "testimonials" },
   ];
 
   const handleNavClick = (link) => {
