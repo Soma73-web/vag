@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import Slider from 'react-slick';
-import api from '../api';
-import { NextArrow, PrevArrow } from './BlueArrows';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React, { useEffect, useState } from "react";
+import Slider from "react-slick";
+import api from "../api";
+import { NextArrow, PrevArrow } from "./BlueArrows";
+import LoadingSpinner from "./LoadingSpinner";
+import EmptyState from "./EmptyState";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL || '';
+const API_BASE = process.env.REACT_APP_API_BASE_URL || "";
 
 const Gallery = () => {
   const [images, setImages] = useState([]);
@@ -13,10 +15,10 @@ const Gallery = () => {
 
   const fetchGallery = async () => {
     try {
-      const res = await api.get('/api/gallery');
+      const res = await api.get("/api/gallery");
       setImages(res.data || []);
     } catch (err) {
-      console.error('Gallery load error:', err);
+      console.error("Gallery load error:", err);
     } finally {
       setLoading(false);
     }
@@ -44,9 +46,9 @@ const Gallery = () => {
 
   if (loading) {
     return (
-      <section className="pt-24 pb-16 bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4 text-center text-lg text-gray-500">
-          Loading gallery...
+      <section className="py-20 bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4">
+          <LoadingSpinner message="Our gallery team is preparing visual memories..." />
         </div>
       </section>
     );
@@ -54,25 +56,32 @@ const Gallery = () => {
 
   if (images.length === 0) {
     return (
-      <section className="pt-24 pb-16 bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4 text-center text-lg text-gray-500">
-          No images found in the gallery.
+      <section className="py-20 bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4">
+          <EmptyState
+            icon="📸"
+            title="Gallery Loading Soon"
+            message="Our photography team is capturing beautiful moments. Check back soon for amazing visuals!"
+          />
         </div>
       </section>
     );
   }
 
   return (
-    <section id="gallery" className="pt-28 pb-20 bg-white scroll-mt-24">
+    <section id="gallery" className="py-20 bg-white scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-10">
           <div className="flex items-center justify-center gap-4 mb-2">
             <div className="w-12 h-px bg-indigo-500"></div>
-            <p className="text-sm font-semibold tracking-widest text-indigo-600 uppercase">Gallery</p>
+            <p className="text-sm font-semibold tracking-widest text-indigo-600 uppercase">
+              Gallery
+            </p>
             <div className="w-12 h-px bg-indigo-500"></div>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug">
-            Explore Our <span className="text-indigo-600 underline">Campus</span> Moments
+            Explore Our{" "}
+            <span className="text-indigo-600 underline">Campus</span> Moments
           </h2>
         </div>
 
@@ -82,11 +91,11 @@ const Gallery = () => {
               <div className="overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all relative">
                 <img
                   src={`${API_BASE}/api/gallery/image/${img.id}`}
-                  alt={img.title || 'Gallery Image'}
+                  alt={img.title || "Gallery Image"}
                   className="w-full h-64 object-cover"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = '/fallback.png';
+                    e.target.src = "/fallback.png";
                   }}
                 />
                 {img.title && (

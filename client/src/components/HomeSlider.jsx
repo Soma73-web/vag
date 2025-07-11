@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React, { useEffect, useState } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import LoadingSpinner from "./LoadingSpinner";
+import EmptyState from "./EmptyState";
 
-const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:4000';
+const API_BASE = process.env.REACT_APP_API_BASE_URL || "http://localhost:4000";
 
 const HomeSlider = () => {
   const [images, setImages] = useState([]);
@@ -16,11 +18,11 @@ const HomeSlider = () => {
         const data = await res.json();
         const formatted = data.map((img) => ({
           ...img,
-          url: `${API_BASE.replace(/\/$/, '')}/api/slider/image/${img.id}`,
+          url: `${API_BASE.replace(/\/$/, "")}/api/slider/image/${img.id}`,
         }));
         setImages(formatted);
       } catch (error) {
-        console.error('Failed to load slider images:', error);
+        console.error("Failed to load slider images:", error);
       } finally {
         setLoading(false);
       }
@@ -39,9 +41,15 @@ const HomeSlider = () => {
   };
 
   return (
-    <div> {/* Removed extra padding */}
+    <div className="mb-8">
       {loading ? (
-        <p className="text-center py-8 text-gray-500">Loading slider…</p>
+        <LoadingSpinner message="Our team is setting up the latest showcase..." />
+      ) : images.length === 0 ? (
+        <EmptyState
+          icon="🖼️"
+          title="Showcase Coming Soon"
+          message="Our team is working on bringing you the latest updates and highlights"
+        />
       ) : (
         <div className="w-full max-w-screen-2xl mx-auto overflow-hidden">
           <Slider {...settings}>

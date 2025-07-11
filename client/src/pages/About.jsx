@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   FaChartLine,
   FaCoins,
@@ -6,7 +6,7 @@ import {
   FaRocket,
   FaHandshake,
   FaCogs,
-} from 'react-icons/fa';
+} from "react-icons/fa";
 
 const About = () => {
   return (
@@ -20,15 +20,17 @@ const About = () => {
               We believe in doing the right thing
             </h2>
             <p className="text-gray-600 mb-6">
-              Foster a supportive and inclusive environment where our team can thrive.
-              We believe in doing the right things, always.
+              Foster a supportive and inclusive environment where our team can
+              thrive. We believe in doing the right things, always.
             </p>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-gray-100 rounded p-4">
                 <div className="flex items-center gap-2 mb-1">
                   <FaChartLine className="text-blue-600" />
-                  <h4 className="text-sm font-semibold text-gray-800">Growth</h4>
+                  <h4 className="text-sm font-semibold text-gray-800">
+                    Growth
+                  </h4>
                 </div>
                 <p className="text-xs text-gray-600">
                   Our mission is to drive growth & improve progress.
@@ -38,7 +40,9 @@ const About = () => {
               <div className="bg-gray-100 rounded p-4">
                 <div className="flex items-center gap-2 mb-1">
                   <FaCoins className="text-green-600" />
-                  <h4 className="text-sm font-semibold text-gray-800">Revenue</h4>
+                  <h4 className="text-sm font-semibold text-gray-800">
+                    Revenue
+                  </h4>
                 </div>
                 <p className="text-xs text-gray-600">
                   Our mission is to grow & improve sustainability.
@@ -68,8 +72,8 @@ const About = () => {
           </span>
           <h2 className="text-2xl font-bold mt-2">Unleash Your Potential</h2>
           <p className="text-gray-600 mt-2 max-w-2xl mx-auto">
-            About Us section typically appears on a company or organization’s website and
-            provides visitors with key information about the entity.
+            About Us section typically appears on a company or organization’s
+            website and provides visitors with key information about the entity.
           </p>
         </div>
 
@@ -77,24 +81,23 @@ const About = () => {
           {[
             {
               icon: <FaLightbulb className="text-indigo-600 text-xl" />,
-              title: 'Creative Thinking',
-              desc:
-                'We nurture problem-solving and new ideas through critical thinking.',
+              title: "Creative Thinking",
+              desc: "We nurture problem-solving and new ideas through critical thinking.",
             },
             {
               icon: <FaRocket className="text-pink-500 text-xl" />,
-              title: 'Innovation',
-              desc: 'Empowering students through innovative methods and digital tools.',
+              title: "Innovation",
+              desc: "Empowering students through innovative methods and digital tools.",
             },
             {
               icon: <FaHandshake className="text-green-500 text-xl" />,
-              title: 'Integrity',
-              desc: 'Trust, honesty and responsibility in everything we do.',
+              title: "Integrity",
+              desc: "Trust, honesty and responsibility in everything we do.",
             },
             {
               icon: <FaCogs className="text-yellow-500 text-xl" />,
-              title: 'Operational Excellence',
-              desc: 'Systematic processes that ensure results and consistency.',
+              title: "Operational Excellence",
+              desc: "Systematic processes that ensure results and consistency.",
             },
           ].map((card, index) => (
             <div
@@ -104,9 +107,14 @@ const About = () => {
               <div className="mb-3">{card.icon}</div>
               <h4 className="font-semibold text-gray-800 mb-2">{card.title}</h4>
               <p className="text-sm text-gray-600">{card.desc}</p>
-              <a href="#" className="text-indigo-600 text-sm mt-3 inline-block">
+              <button
+                className="text-indigo-600 text-sm mt-3 inline-block hover:text-indigo-800 transition"
+                onClick={() =>
+                  console.log("Read more clicked for:", card.title)
+                }
+              >
                 Read more →
-              </a>
+              </button>
             </div>
           ))}
         </div>
