@@ -67,16 +67,62 @@ const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex gap-6 text-sm font-medium">
+        <nav className="hidden md:flex items-center gap-8 text-sm font-semibold">
           {navLinks.map((link) => (
             <button
               key={link.name}
               onClick={() => handleNavClick(link)}
-              className="hover:text-indigo-600 transition"
+              className="text-gray-700 hover:text-indigo-600 transition-colors duration-200 relative group"
             >
               {link.name}
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 transition-all duration-200 group-hover:w-full"></span>
             </button>
           ))}
+
+          {/* About Us Dropdown */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
+              className="text-gray-700 hover:text-indigo-600 transition-colors duration-200 flex items-center gap-1 relative group"
+            >
+              About Us
+              <FaChevronDown
+                className={`text-xs transition-transform duration-200 ${aboutDropdownOpen ? "rotate-180" : ""}`}
+              />
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 transition-all duration-200 group-hover:w-full"></span>
+            </button>
+
+            {/* Dropdown Menu */}
+            {aboutDropdownOpen && (
+              <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50">
+                <div className="absolute -top-1 right-6 w-2 h-2 bg-white border-l border-t border-gray-100 transform rotate-45"></div>
+                {aboutDropdownItems.map((item, index) => (
+                  <button
+                    key={item.name}
+                    onClick={() => handleAboutDropdownClick(item)}
+                    className="w-full text-left px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg"
+                  >
+                    <div className="font-medium">{item.name}</div>
+                    {item.name === "About Us" && (
+                      <div className="text-xs text-gray-500 mt-1">
+                        Learn about our mission
+                      </div>
+                    )}
+                    {item.name === "Director's Message" && (
+                      <div className="text-xs text-gray-500 mt-1">
+                        Message from leadership
+                      </div>
+                    )}
+                    {item.name === "Testimonials" && (
+                      <div className="text-xs text-gray-500 mt-1">
+                        Success stories
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </nav>
 
         {/* Hamburger Icon */}
