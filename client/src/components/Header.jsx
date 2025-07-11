@@ -127,8 +127,15 @@ const Header = () => {
 
         {/* Hamburger Icon */}
         <div className="md:hidden">
-          <button onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+          >
+            {menuOpen ? (
+              <FaTimes size={24} className="text-gray-700" />
+            ) : (
+              <FaBars size={24} className="text-gray-700" />
+            )}
           </button>
         </div>
 
