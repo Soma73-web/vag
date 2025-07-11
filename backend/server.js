@@ -38,7 +38,10 @@ app.use("/api/gallery", galleryRoutes);
 app.use("/api/results", resultRoutes);
 app.use("/api/auth", adminRoutes);
 app.use("/api/slider", sliderRoutes);
-app.use("/api/image-gallery", imageGalleryRoutes); // <-- Add this
+app.use("/api/image-gallery", imageGalleryRoutes);
+app.use("/api/students", studentRoutes);
+app.use("/api/admin", adminStudentRoutes);
+app.use("/api/events", eventRoutes);
 
 // Default route
 app.get("/", (req, res) => {
