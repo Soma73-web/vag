@@ -1,40 +1,43 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import Slider from 'react-slick';
-import api from '../api';
-import { NextArrow, PrevArrow } from './BlueArrows';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React, { useEffect, useState, useCallback } from "react";
+import Slider from "react-slick";
+import api from "../api";
+import { NextArrow, PrevArrow } from "./BlueArrows";
+import LoadingSpinner from "./LoadingSpinner";
+import EmptyState from "./EmptyState";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const convertToEmbed = useCallback((url) => {
-    if (!url || typeof url !== 'string') return '';
+    if (!url || typeof url !== "string") return "";
     const trimmed = url.trim();
     try {
       const u = new URL(trimmed);
-      if (u.hostname === 'youtu.be') return `https://www.youtube.com/embed${u.pathname}`;
-      if (u.pathname.startsWith('/shorts/'))
-        return `https://www.youtube.com/embed${u.pathname.replace('/shorts', '')}`;
-      const id = u.searchParams.get('v');
+      if (u.hostname === "youtu.be")
+        return `https://www.youtube.com/embed${u.pathname}`;
+      if (u.pathname.startsWith("/shorts/"))
+        return `https://www.youtube.com/embed${u.pathname.replace("/shorts", "")}`;
+      const id = u.searchParams.get("v");
       return id ? `https://www.youtube.com/embed/${id}` : trimmed;
     } catch {
-      return '';
+      return "";
     }
   }, []);
 
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const res = await api.get('/api/testimonials');
+        const res = await api.get("/api/testimonials");
         const data = res.data.map((t) => ({
           ...t,
           embedUrl: convertToEmbed(t.video_link),
         }));
         setTestimonials(data);
       } catch (err) {
-        console.error('Failed to load testimonials:', err);
+        console.error("Failed to load testimonials:", err);
       } finally {
         setLoading(false);
       }
@@ -55,14 +58,21 @@ const Testimonials = () => {
   };
 
   if (loading)
-    return <div className="text-center py-10 text-gray-500">Loading testimonials...</div>;
+    return (
+      <div className="text-center py-10 text-gray-500">
+        Loading testimonials...
+      </div>
+    );
   if (testimonials.length === 0)
-    return <div className="text-center py-10 text-gray-500">No testimonials found.</div>;
+    return (
+      <div className="text-center py-10 text-gray-500">
+        No testimonials found.
+      </div>
+    );
 
   return (
     <section id="testimonials" className="pt-28 pb-16 bg-white scroll-mt-24">
       <div className="max-w-6xl mx-auto px-4">
-
         {/* ───── New Styled Heading ───── */}
         <div className="text-center mb-10">
           <div className="flex items-center justify-center gap-4 mb-2">
@@ -73,7 +83,9 @@ const Testimonials = () => {
             <div className="w-12 h-px bg-blue-500"></div>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug">
-            See How Our <span className="text-blue-600 underline">Students</span> Cracked&nbsp;NEET&nbsp;&amp;&nbsp;JEE –
+            See How Our{" "}
+            <span className="text-blue-600 underline">Students</span>{" "}
+            Cracked&nbsp;NEET&nbsp;&amp;&nbsp;JEE –
             <br className="hidden md:block" />
             Watch Their Stories!
           </h2>
@@ -111,8 +123,12 @@ const Testimonials = () => {
                     )}
                   </div>
                   <div>
-                    <p className="text-blue-700 font-semibold text-md">{t.name}</p>
-                    {t.college && <p className="text-sm text-gray-500">{t.college}</p>}
+                    <p className="text-blue-700 font-semibold text-md">
+                      {t.name}
+                    </p>
+                    {t.college && (
+                      <p className="text-sm text-gray-500">{t.college}</p>
+                    )}
                   </div>
                 </div>
               </div>
