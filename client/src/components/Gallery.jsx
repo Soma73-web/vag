@@ -46,9 +46,9 @@ const Gallery = () => {
 
   if (loading) {
     return (
-      <section className="pt-24 pb-16 bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4 text-center text-lg text-gray-500">
-          Loading gallery...
+      <section className="py-20 bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4">
+          <LoadingSpinner message="Our gallery team is preparing visual memories..." />
         </div>
       </section>
     );
