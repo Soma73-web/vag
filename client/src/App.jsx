@@ -57,20 +57,24 @@ function App() {
             <>
               <main className="pt-[96px]">
                 <HomeSlider />
+
                 <Events />
+
                 <Hero />
 
                 {/* Courses Section */}
-                <div id="courses">
+                <div id="courses" className="scroll-mt-24">
                   <Courses />
                 </div>
 
                 <Features />
+
                 <Results />
+
                 <Gallery />
 
                 {/* Testimonials Section */}
-                <div id="testimonials">
+                <div id="testimonials" className="scroll-mt-24">
                   <Testimonials />
                 </div>
               </main>
