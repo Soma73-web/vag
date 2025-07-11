@@ -39,6 +39,7 @@ function App() {
             <>
               <main className="pt-[96px]">
                 <HomeSlider />
+                <Events />
                 <Hero />
 
                 {/* Courses Section */}
