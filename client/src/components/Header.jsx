@@ -140,16 +140,16 @@ const Header = () => {
         </div>
 
         {/* Desktop Action Buttons */}
-        <div className="hidden md:flex gap-3">
+        <div className="hidden md:flex items-center gap-3">
           <Link
             to="/student-login"
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold text-sm transition"
+            className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-5 py-2.5 rounded-full font-semibold text-sm transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
           >
-            Student Login
+            Student Portal
           </Link>
           <Link
             to="/contact"
-            className="bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold text-sm transition"
+            className="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
           >
             Enquire Now
           </Link>
