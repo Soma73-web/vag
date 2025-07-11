@@ -1,211 +1,222 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
-import { FaBars, FaTimes } from "react-icons/fa";
-import { scrollToSection as utilScrollToSection } from "../utils/scrollToSection";
+import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 
 const Header = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isNavigating, setIsNavigating] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  // Handle scroll effect for header
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
+  const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const navLinks = [
     { name: "Home", path: "/" },
-    { name: "Director's Message", path: "/directors-message" },
     { name: "Courses", path: "/", scrollTo: "courses" },
     { name: "Results", path: "/results" },
     { name: "Gallery", path: "/gallery" },
     { name: "Downloads", path: "/downloads" },
-    { name: "Testimonials", path: "/", scrollTo: "testimonials" },
     { name: "Contact", path: "/contact" },
-    { name: "About Us", path: "/about" },
   ];
 
-  const handleNavClick = (link) => {
-    if (isNavigating) return; // Prevent rapid clicks
+  const aboutDropdownItems = [
+    { name: "About Us", path: "/about" },
+    { name: "Director's Message", path: "/directors-message" },
+    { name: "Testimonials", path: "/", scrollTo: "testimonials" },
+  ];
 
-    setIsNavigating(true);
-    setMenuOpen(false);
-
-    if (link.scrollTo) {
-      // If we're already on the home page, scroll directly
-      if (location.pathname === "/") {
-        // Add a small delay to ensure any navigation state is cleared
-        setTimeout(() => {
-          utilScrollToSection(link.scrollTo);
-        }, 100);
-        setTimeout(() => setIsNavigating(false), 1200); // Reset after scroll animation
-      } else {
-        // Navigate to home first, then scroll
-        navigate("/");
-        // Wait for navigation to complete before scrolling
-        setTimeout(() => {
-          utilScrollToSection(link.scrollTo);
-        }, 300);
-        setTimeout(() => setIsNavigating(false), 800); // Reset after navigation and scroll
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setAboutDropdownOpen(false);
       }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleNavClick = (link) => {
+    setMenuOpen(false);
+    setAboutDropdownOpen(false);
+    setMobileAboutOpen(false);
+    if (link.scrollTo) {
+      navigate(`/#${link.scrollTo}`);
     } else {
       navigate(link.path);
-      setTimeout(() => setIsNavigating(false), 500); // Reset after navigation
     }
   };
 
+  const handleAboutDropdownClick = (item) => {
+    setAboutDropdownOpen(false);
+    handleNavClick(item);
+  };
+
   return (
-    <header
-      className={`fixed top-0 left-0 w-full z-[60] transition-all duration-300 ${
-        isScrolled
-          ? "bg-white/95 backdrop-blur-md shadow-lg"
-          : "bg-white shadow"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center h-24 gap-2 lg:gap-4 xl:gap-8">
-          {/* Logo - Fixed at left */}
-          <div className="flex-shrink-0">
+    <header className="fixed top-0 left-0 w-full bg-white backdrop-blur-sm bg-opacity-95 shadow-lg border-b border-gray-100 z-50 h-[96px]">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <Link to="/" className="flex items-center">
+          <img
+            src={logo}
+            alt="VAGUS Logo"
+            className="h-16 object-contain hover:scale-105 transition-transform duration-200"
+          />
+        </Link>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-8 text-sm font-semibold">
+          {navLinks.map((link) => (
             <button
-              onClick={() => {
-                if (!isNavigating) {
-                  setIsNavigating(true);
-                  navigate("/");
-                  setTimeout(() => setIsNavigating(false), 500);
-                }
-              }}
-              className="cursor-pointer disabled:opacity-50 transition-transform duration-300 hover:scale-105"
-              disabled={isNavigating}
+              key={link.name}
+              onClick={() => handleNavClick(link)}
+              className="text-gray-700 hover:text-indigo-600 transition-colors duration-200 relative group"
             >
-              <img
-                src={logo}
-                alt="VAGUS Logo"
-                className={`object-contain transition-all duration-300 ${
-                  isScrolled ? "h-12" : "h-16"
-                }`}
-              />
+              {link.name}
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 transition-all duration-200 group-hover:w-full"></span>
             </button>
-          </div>
+          ))}
 
-          {/* Desktop Navigation - Centered with responsive spacing */}
-          <nav className="hidden lg:flex items-center flex-1 justify-center overflow-hidden">
-            <div className="flex items-center space-x-1 xl:space-x-2 2xl:space-x-4">
-              {navLinks.map((link, index) => (
-                <button
-                  key={link.name}
-                  onClick={() => handleNavClick(link)}
-                  className={`relative py-2 px-1 lg:px-2 xl:px-3 text-xs lg:text-xs xl:text-sm font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed
-                    hover:text-indigo-600 transform hover:scale-105 whitespace-nowrap flex-shrink-0
-                    ${location.pathname === link.path && !link.scrollTo ? "text-indigo-600" : "text-gray-700"}
-                    before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5
-                    before:bg-indigo-600 before:transition-all before:duration-300
-                    hover:before:w-full
-                  `}
-                  disabled={isNavigating}
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  {link.name}
-                </button>
-              ))}
-            </div>
-          </nav>
-
-          {/* Right side elements - Enquire Now Button */}
-          <div className="flex items-center flex-shrink-0">
-            <Link
-              to="/contact"
-              className="hidden lg:inline-block btn-primary text-xs xl:text-sm px-3 lg:px-4 xl:px-6 py-2.5 font-semibold whitespace-nowrap"
+          {/* About Us Dropdown */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
+              className="text-gray-700 hover:text-indigo-600 transition-colors duration-200 flex items-center gap-1 relative group"
             >
-              Enquire Now
-            </Link>
+              About Us
+              <FaChevronDown
+                className={`text-xs transition-transform duration-200 ${aboutDropdownOpen ? "rotate-180" : ""}`}
+              />
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 transition-all duration-200 group-hover:w-full"></span>
+            </button>
 
-            {/* Hamburger Icon - Mobile only */}
-            <div className="lg:hidden ml-4">
-              <button
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="p-2 text-gray-700 hover:text-indigo-600 transition-colors duration-300"
-              >
-                <div className="relative w-6 h-6">
-                  <span
-                    className={`absolute inset-0 transition-all duration-300 ${
-                      menuOpen
-                        ? "rotate-45 translate-y-0"
-                        : "rotate-0 -translate-y-2"
-                    }`}
+            {/* Dropdown Menu */}
+            {aboutDropdownOpen && (
+              <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50">
+                <div className="absolute -top-1 right-6 w-2 h-2 bg-white border-l border-t border-gray-100 transform rotate-45"></div>
+                {aboutDropdownItems.map((item, index) => (
+                  <button
+                    key={item.name}
+                    onClick={() => handleAboutDropdownClick(item)}
+                    className="w-full text-left px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg"
                   >
-                    <FaBars
-                      size={24}
-                      className={menuOpen ? "opacity-0" : "opacity-100"}
-                    />
-                  </span>
-                  <span
-                    className={`absolute inset-0 transition-all duration-300 ${
-                      menuOpen
-                        ? "rotate-0 translate-y-0"
-                        : "rotate-45 translate-y-2"
-                    }`}
-                  >
-                    <FaTimes
-                      size={24}
-                      className={menuOpen ? "opacity-100" : "opacity-0"}
-                    />
-                  </span>
-                </div>
-              </button>
-            </div>
+                    <div className="font-medium">{item.name}</div>
+                    {item.name === "About Us" && (
+                      <div className="text-xs text-gray-500 mt-1">
+                        Learn about our mission
+                      </div>
+                    )}
+                    {item.name === "Director's Message" && (
+                      <div className="text-xs text-gray-500 mt-1">
+                        Message from leadership
+                      </div>
+                    )}
+                    {item.name === "Testimonials" && (
+                      <div className="text-xs text-gray-500 mt-1">
+                        Success stories
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
+        </nav>
+
+        {/* Hamburger Icon */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+          >
+            {menuOpen ? (
+              <FaTimes size={24} className="text-gray-700" />
+            ) : (
+              <FaBars size={24} className="text-gray-700" />
+            )}
+          </button>
         </div>
 
-        {/* Mobile Menu */}
-        <div
-          className={`lg:hidden transition-all duration-300 overflow-hidden ${
-            menuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="py-6 bg-white/95 backdrop-blur-md border-t border-gray-100">
-            <div className="space-y-4">
-              {navLinks.map((link, index) => (
-                <div
-                  key={link.name}
-                  className="border-b border-gray-100 pb-3 last:border-b-0 animate-slide-up"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <button
-                    onClick={() => handleNavClick(link)}
-                    className={`w-full text-left font-semibold text-base py-2 transition-all duration-300
-                      disabled:opacity-50 disabled:cursor-not-allowed hover:text-indigo-600 hover:translate-x-2
-                      ${location.pathname === link.path && !link.scrollTo ? "text-indigo-600" : "text-gray-700"}
-                    `}
-                    disabled={isNavigating}
-                  >
-                    {link.name}
-                  </button>
-                </div>
-              ))}
-              <div
-                className="pt-4 animate-fade-in"
-                style={{ animationDelay: "400ms" }}
-              >
-                <Link
-                  to="/contact"
-                  onClick={() => setMenuOpen(false)}
-                  className="btn-primary w-full text-center block py-3 font-semibold"
-                >
-                  Enquire Now
-                </Link>
-              </div>
-            </div>
-          </div>
+        {/* Desktop Action Buttons */}
+        <div className="hidden md:flex items-center gap-3">
+          <Link
+            to="/student-login"
+            className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-5 py-2.5 rounded-full font-semibold text-sm transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+          >
+            Student Portal
+          </Link>
+          <Link
+            to="/contact"
+            className="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+          >
+            Enquire Now
+          </Link>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
+          <div className="px-6 py-4 space-y-3">
+            {navLinks.map((link) => (
+              <button
+                key={link.name}
+                onClick={() => handleNavClick(link)}
+                className="block w-full text-left py-3 px-4 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors duration-150 font-medium"
+              >
+                {link.name}
+              </button>
+            ))}
+
+            {/* Mobile About Us Dropdown */}
+            <div className="border-t border-gray-100 pt-3">
+              <button
+                onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
+                className="flex items-center justify-between w-full py-3 px-4 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors duration-150 font-medium"
+              >
+                About Us
+                <FaChevronDown
+                  className={`text-xs transition-transform duration-200 ${mobileAboutOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              {mobileAboutOpen && (
+                <div className="ml-4 mt-2 space-y-2">
+                  {aboutDropdownItems.map((item) => (
+                    <button
+                      key={item.name}
+                      onClick={() => handleNavClick(item)}
+                      className="block w-full text-left py-2 px-4 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors duration-150"
+                    >
+                      {item.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Mobile Action Buttons */}
+            <div className="border-t border-gray-100 pt-4 space-y-3">
+              <Link
+                to="/student-login"
+                onClick={() => setMenuOpen(false)}
+                className="block w-full text-center bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-4 py-3 rounded-lg font-semibold transition-all duration-200"
+              >
+                Student Portal
+              </Link>
+              <Link
+                to="/contact"
+                onClick={() => setMenuOpen(false)}
+                className="block w-full text-center bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white px-5 py-3 rounded-lg font-semibold transition-all duration-200"
+              >
+                Enquire Now
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

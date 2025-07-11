@@ -1,15 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { initScrollManagement } from "./utils/scrollManagement";
+import SiteLoader from "./components/SiteLoader";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ScrollToHash from "./components/ScrollToHash";
-import WhatsAppFloat from "./components/WhatsAppFloat";
-import PageTransition from "./components/PageTransition";
-import ScrollProgress from "./components/ScrollProgress";
-import BackToTop from "./components/BackToTop";
-import InitialLoader from "./components/InitialLoader";
 
 // Homepage Components
 import HomeSlider from "./components/HomeSlider";
@@ -19,6 +15,7 @@ import Features from "./components/Features";
 import Results from "./components/Results";
 import Gallery from "./components/Gallery";
 import Testimonials from "./components/Testimonials";
+import Events from "./components/Events";
 
 // Other Pages
 import GallerySection from "./components/GallerySection";
@@ -30,118 +27,79 @@ import AdminPanel from "./pages/AdminPanel";
 import AdminLogin from "./pages/AdminLogin";
 import About from "./pages/About";
 import ResultsPage from "./pages/ResultsPage";
+import StudentLogin from "./pages/StudentLogin";
+import StudentDashboard from "./pages/StudentDashboard";
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    // Initialize scroll management on app start
-    initScrollManagement();
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
 
-    // Additional safety measure - ensure we start at top
-    const resetScroll = () => {
-      if (window.location.hash === "" || window.location.pathname !== "/") {
-        window.scrollTo(0, 0);
-      }
-    };
-
-    // Run immediately and after a short delay
-    resetScroll();
-    setTimeout(resetScroll, 100);
+    return () => clearTimeout(timer);
   }, []);
 
+  if (loading) {
+    return <SiteLoader />;
+  }
+
   return (
-    <InitialLoader>
+    <ErrorBoundary>
       <Router>
         <ScrollToHash />
-        <ScrollProgress />
         <Header />
 
-        {/* Floating Action Buttons - Available on all pages */}
-        <WhatsAppFloat />
-        <BackToTop />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <main className="pt-[96px]">
+                  <HomeSlider />
 
-        <PageTransition>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <main className="pt-[96px] bg-gradient-to-b from-gray-50 to-white">
-                    <HomeSlider />
-                    <Hero />
+                  <Events />
 
-                    {/* Courses Section */}
-                    <div id="courses">
-                      <Courses />
-                    </div>
+                  <Hero />
 
-                    <Features />
-                    <Results />
-                    <Gallery />
+                  {/* Courses Section */}
+                  <div id="courses" className="scroll-mt-24">
+                    <Courses />
+                  </div>
 
-                    {/* Testimonials Section */}
-                    <div id="testimonials">
-                      <Testimonials />
-                    </div>
-                  </main>
-                  <Footer />
-                </>
-              }
-            />
+                  <Features />
 
-            {/* Other Pages with enhanced layouts */}
-            <Route path="/gallery" element={<GallerySection />} />
-            <Route path="/downloads" element={<DownloadSection />} />
-            <Route
-              path="/directors-message"
-              element={
-                <>
-                  <DirectorsMessage />
-                  <Footer />
-                </>
-              }
-            />
-            <Route
-              path="/privacy-policy"
-              element={
-                <div className="pt-[96px] min-h-screen bg-gradient-to-b from-gray-50 to-white">
-                  <PrivacyPolicy />
-                  <Footer />
-                </div>
-              }
-            />
-            <Route
-              path="/contact"
-              element={
-                <>
-                  <ContactPage />
-                  <Footer />
-                </>
-              }
-            />
-            <Route path="/admin" element={<AdminPanel />} />
-            <Route path="/admin-login" element={<AdminLogin />} />
-            <Route
-              path="/about"
-              element={
-                <>
-                  <About />
-                  <Footer />
-                </>
-              }
-            />
-            <Route
-              path="/results"
-              element={
-                <div className="pt-[96px] min-h-screen bg-gradient-to-b from-gray-50 to-white">
-                  <ResultsPage />
-                  <Footer />
-                </div>
-              }
-            />
-          </Routes>
-        </PageTransition>
+                  <Results />
+
+                  <Gallery />
+
+                  {/* Testimonials Section */}
+                  <div id="testimonials" className="scroll-mt-24">
+                    <Testimonials />
+                  </div>
+                </main>
+                <Footer />
+              </>
+            }
+          />
+
+          {/* Other Pages */}
+          <Route path="/gallery" element={<GallerySection />} />
+          <Route path="/downloads" element={<DownloadSection />} />
+          <Route path="/directors-message" element={<DirectorsMessage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/results" element={<ResultsPage />} />
+          <Route path="/student-login" element={<StudentLogin />} />
+          <Route path="/student-dashboard" element={<StudentDashboard />} />
+        </Routes>
       </Router>
-    </InitialLoader>
+    </ErrorBoundary>
   );
 }
 

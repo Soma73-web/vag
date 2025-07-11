@@ -1,16 +1,35 @@
-import React from "react";
-import HomeSlider from "../components/HomeSlider";
-import Hero from "../components/Hero";
-import Courses from "../components/Courses";
-import Features from "../components/Features";
-import Gallery from "../components/Gallery";
-import Testimonials from "../components/Testimonials";
+import React, { useEffect, useRef } from 'react';
+import HomeSlider from '../components/HomeSlider';
+import Hero from '../components/Hero';
+import Courses from '../components/Courses';
+import Features from '../components/Features';
+import Gallery from '../components/Gallery';
+import Testimonials from '../components/Testimonials';
 // import DownloadSection from '../components/DownloadSection';
-import Footer from "../components/Footer";
-import ResultsPage from "./ResultsPage";
+import Footer from '../components/Footer';
+import ResultsPage from './ResultsPage';
 
 const HomePage = () => {
-  // Removed automatic scroll logic that was causing unwanted gallery scrolling
+  const resultsRef = useRef(null);
+  const galleryRef = useRef(null);
+  const testimonialsRef = useRef(null);
+
+  useEffect(() => {
+    const section = localStorage.getItem('scrollTo');
+    if (section) {
+      const scrollTargets = {
+        results: resultsRef.current,
+        gallery: galleryRef.current,
+        testimonials: testimonialsRef.current,
+      };
+      if (scrollTargets[section]) {
+        setTimeout(() => {
+          scrollTargets[section].scrollIntoView({ behavior: 'smooth' });
+          localStorage.removeItem('scrollTo');
+        }, 100); // Delay to ensure layout is ready
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -31,15 +50,15 @@ const HomePage = () => {
           <Features />
         </div>
 
-        <div className="mb-16">
+        <div ref={resultsRef} className="mb-16">
           <ResultsPage />
         </div>
 
-        <div className="mb-16">
+        <div ref={galleryRef} className="mb-16">
           <Gallery />
         </div>
 
-        <div className="mb-16">
+        <div ref={testimonialsRef} className="mb-16">
           <Testimonials />
         </div>
 

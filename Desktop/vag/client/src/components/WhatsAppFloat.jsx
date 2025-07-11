@@ -1,161 +1,71 @@
-import React, { useState, useEffect } from "react";
-import { FaWhatsapp, FaTimes } from "react-icons/fa";
+import React, { useEffect, useState } from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
-const WhatsAppFloat = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
+import { NextArrow, PrevArrow } from './BlueArrows';
+
+const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:4000';
+
+const HomeSlider = () => {
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Show button after a short delay for better UX
-    const timer = setTimeout(() => setIsVisible(true), 2000);
-    return () => clearTimeout(timer);
+    const fetchSliderImages = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/slider`);
+        const data = await res.json();
+
+        const formatted = data.map((img) => ({
+          ...img,
+          url: `${API_BASE.replace(/\/$/, '')}/api/slider/image/${img.id}`,
+        }));
+
+        setImages(formatted);
+      } catch (error) {
+        console.error('Failed to load slider images:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSliderImages();
   }, []);
 
-  useEffect(() => {
-    // Show tooltip after button appears
-    if (isVisible) {
-      const tooltipTimer = setTimeout(() => {
-        setShowTooltip(true);
-        // Hide tooltip after 3 seconds
-        setTimeout(() => setShowTooltip(false), 3000);
-      }, 1000);
-      return () => clearTimeout(tooltipTimer);
-    }
-  }, [isVisible]);
-
-  const handleWhatsAppClick = () => {
-    const phoneNumber = "917353049113"; // Replace with actual number
-    const message = "Hello! I would like to know more about your courses.";
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-    window.open(whatsappURL, "_blank");
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 800,
+    autoplay: true,
+    autoplaySpeed: 4000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
   };
-
-  const handleExpand = () => {
-    setIsExpanded(!isExpanded);
-    setShowTooltip(false);
-  };
-
-  if (!isVisible) return null;
 
   return (
-    <>
-      {/* WhatsApp Float Button */}
-      <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
-        {/* Tooltip */}
-        {showTooltip && !isExpanded && (
-          <div className="absolute bottom-16 right-0 mb-2 animate-slide-up">
-            <div className="bg-gray-800 text-white text-sm px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
-              Need help? Chat with us!
-              <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
-            </div>
-          </div>
-        )}
-
-        {/* Expanded Chat Panel */}
-        {isExpanded && (
-          <div className="absolute bottom-16 right-0 w-80 max-w-[90vw] bg-white rounded-lg shadow-2xl border border-gray-200 animate-scale-in">
-            <div className="bg-green-500 text-white p-4 rounded-t-lg flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <FaWhatsapp size={24} />
-                <div>
-                  <h3 className="font-semibold text-sm">VAGUS Institute</h3>
-                  <p className="text-xs opacity-90">
-                    Typically replies in minutes
-                  </p>
-                </div>
+    <div className="mt-24"> {/* match this with header's height */}
+      {loading ? (
+        <p className="text-center py-8 text-gray-500">Loading slider…</p>
+      ) : (
+        <div className="w-full max-w-screen-2xl mx-auto overflow-hidden">
+          <Slider {...settings}>
+            {images.map((img) => (
+              <div key={img.id}>
+                <img
+                  src={img.url}
+                  alt={`Slide ${img.id}`}
+                  className="w-full h-[230px] object-cover"
+                />
               </div>
-              <button
-                onClick={() => setIsExpanded(false)}
-                className="text-white hover:bg-green-600 p-1 rounded transition-colors"
-              >
-                <FaTimes size={16} />
-              </button>
-            </div>
-
-            <div className="p-4 space-y-3">
-              <div className="bg-gray-100 p-3 rounded-lg text-sm">
-                <p className="font-medium text-gray-800">Hi there! 👋</p>
-                <p className="text-gray-600 mt-1">
-                  How can we help you today? Ask us about our NEET/JEE courses!
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <button
-                  onClick={() => {
-                    const message = "I want to know about NEET courses";
-                    const whatsappURL = `https://wa.me/917353049113?text=${encodeURIComponent(message)}`;
-                    window.open(whatsappURL, "_blank");
-                  }}
-                  className="w-full text-left p-2 hover:bg-gray-50 rounded transition-colors text-sm"
-                >
-                  📚 NEET Courses Information
-                </button>
-
-                <button
-                  onClick={() => {
-                    const message = "I want to know about JEE courses";
-                    const whatsappURL = `https://wa.me/917353049113?text=${encodeURIComponent(message)}`;
-                    window.open(whatsappURL, "_blank");
-                  }}
-                  className="w-full text-left p-2 hover:bg-gray-50 rounded transition-colors text-sm"
-                >
-                  🎯 JEE Courses Information
-                </button>
-
-                <button
-                  onClick={() => {
-                    const message = "I want to know about admission process";
-                    const whatsappURL = `https://wa.me/917353049113?text=${encodeURIComponent(message)}`;
-                    window.open(whatsappURL, "_blank");
-                  }}
-                  className="w-full text-left p-2 hover:bg-gray-50 rounded transition-colors text-sm"
-                >
-                  📝 Admission Process
-                </button>
-
-                <button
-                  onClick={() => {
-                    const message = "I want to schedule a visit";
-                    const whatsappURL = `https://wa.me/917353049113?text=${encodeURIComponent(message)}`;
-                    window.open(whatsappURL, "_blank");
-                  }}
-                  className="w-full text-left p-2 hover:bg-gray-50 rounded transition-colors text-sm"
-                >
-                  🏢 Schedule a Visit
-                </button>
-              </div>
-
-              <button
-                onClick={handleWhatsAppClick}
-                className="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg transition-colors text-sm font-medium"
-              >
-                💬 Start Custom Chat
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Main WhatsApp Button */}
-        <button
-          onClick={handleExpand}
-          className="bg-green-500 hover:bg-green-600 text-white p-3 md:p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 animate-float relative group"
-          aria-label="Contact us on WhatsApp"
-        >
-          <FaWhatsapp size={24} className="md:text-2xl" />
-
-          {/* Pulse animation ring */}
-          <div className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-20"></div>
-          <div
-            className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-10"
-            style={{ animationDelay: "0.5s" }}
-          ></div>
-        </button>
-      </div>
-    </>
+            ))}
+          </Slider>
+        </div>
+      )}
+    </div>
   );
 };
 
-export default WhatsAppFloat;
+export default HomeSlider;
