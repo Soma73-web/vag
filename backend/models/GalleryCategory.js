@@ -11,5 +11,12 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
 
+  GalleryCategory.associate = (models) => {
+    GalleryCategory.hasMany(models.ImageGalleryItem, {
+      foreignKey: "categoryId",
+      as: "images",
+    });
+  };
+
   return GalleryCategory;
 };
