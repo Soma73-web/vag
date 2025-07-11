@@ -87,6 +87,13 @@ const Header = () => {
             ))}
             <li className="pt-4">
               <Link
+                to="/student-login"
+                onClick={() => setMenuOpen(false)}
+                className="block w-full text-center bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold mb-2 transition"
+              >
+                Student Login
+              </Link>
+              <Link
                 to="/contact"
                 onClick={() => setMenuOpen(false)}
                 className="block w-full text-center bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold transition"
