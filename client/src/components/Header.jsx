@@ -158,35 +158,63 @@ const Header = () => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-white px-6 pb-4 pt-2 text-sm font-medium shadow">
-          <ul className="space-y-4">
+        <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
+          <div className="px-6 py-4 space-y-3">
             {navLinks.map((link) => (
-              <li key={link.name} className="border-b pb-2">
-                <button
-                  onClick={() => handleNavClick(link)}
-                  className="w-full text-left"
-                >
-                  {link.name}
-                </button>
-              </li>
+              <button
+                key={link.name}
+                onClick={() => handleNavClick(link)}
+                className="block w-full text-left py-3 px-4 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors duration-150 font-medium"
+              >
+                {link.name}
+              </button>
             ))}
-            <li className="pt-4">
+
+            {/* Mobile About Us Dropdown */}
+            <div className="border-t border-gray-100 pt-3">
+              <button
+                onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
+                className="flex items-center justify-between w-full py-3 px-4 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors duration-150 font-medium"
+              >
+                About Us
+                <FaChevronDown
+                  className={`text-xs transition-transform duration-200 ${mobileAboutOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              {mobileAboutOpen && (
+                <div className="ml-4 mt-2 space-y-2">
+                  {aboutDropdownItems.map((item) => (
+                    <button
+                      key={item.name}
+                      onClick={() => handleNavClick(item)}
+                      className="block w-full text-left py-2 px-4 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors duration-150"
+                    >
+                      {item.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Mobile Action Buttons */}
+            <div className="border-t border-gray-100 pt-4 space-y-3">
               <Link
                 to="/student-login"
                 onClick={() => setMenuOpen(false)}
-                className="block w-full text-center bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold mb-2 transition"
+                className="block w-full text-center bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-4 py-3 rounded-lg font-semibold transition-all duration-200"
               >
-                Student Login
+                Student Portal
               </Link>
               <Link
                 to="/contact"
                 onClick={() => setMenuOpen(false)}
-                className="block w-full text-center bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold transition"
+                className="block w-full text-center bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white px-5 py-3 rounded-lg font-semibold transition-all duration-200"
               >
                 Enquire Now
               </Link>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
       )}
     </header>
