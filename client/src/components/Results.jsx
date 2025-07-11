@@ -94,12 +94,17 @@ const Results = () => {
 
         {/* Loading / Empty / Results */}
         {loading ? (
-          <p className="text-center py-10 text-gray-500">Loading results…</p>
+          <LoadingSpinner message="Our heroes are loading their achievements..." />
         ) : !filtered.length ? (
-          <p className="text-center py-10 text-gray-500">
-            No results found for{" "}
-            <span className="font-semibold">NEET {selected}</span>
-          </p>
+          <EmptyState
+            icon="🏆"
+            title="Results Coming Soon"
+            message={
+              selected
+                ? `Results for NEET ${selected} will be updated soon`
+                : "Our achievers' results will be showcased here"
+            }
+          />
         ) : (
           <Slider {...slick}>
             {filtered.map((r) => (
