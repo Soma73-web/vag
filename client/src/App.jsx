@@ -30,6 +30,21 @@ import StudentLogin from "./pages/StudentLogin";
 import StudentDashboard from "./pages/StudentDashboard";
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <SiteLoader />;
+  }
+
   return (
     <Router>
       <ScrollToHash />
