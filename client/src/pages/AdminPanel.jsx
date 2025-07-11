@@ -1,22 +1,36 @@
-import React, { useState } from 'react';
-import ResultAdmin from './admin/ResultAdmin';
-import GalleryAdmin from './admin/GalleryAdmin';
-import GalleryAdminn from './admin/GalleryAdminn';
-import TestimonialAdmin from './admin/TestimonialAdmin';
-import DownloadAdmin from './admin/DownloadAdmin';
-import SliderAdmin from './admin/SliderAdmin';
+import React, { useState } from "react";
+import ResultAdmin from "./admin/ResultAdmin";
+import GalleryAdmin from "./admin/GalleryAdmin";
+import GalleryAdminn from "./admin/GalleryAdminn";
+import TestimonialAdmin from "./admin/TestimonialAdmin";
+import DownloadAdmin from "./admin/DownloadAdmin";
+import SliderAdmin from "./admin/SliderAdmin";
+import StudentAdmin from "./admin/StudentAdmin";
+import AttendanceAdmin from "./admin/AttendanceAdmin";
+import TestResultAdmin from "./admin/TestResultAdmin";
 
 const TABS = [
-  { id: 'slider', label: 'Slider', component: <SliderAdmin /> },
-  { id: 'results', label: 'Results', component: <ResultAdmin /> },
-  { id: 'gallery', label: 'Gallery', component: <GalleryAdmin /> },
-  { id: 'gallery-categorized', label: 'Gallery Categorized', component: <GalleryAdminn /> },
-  { id: 'testimonials', label: 'Testimonials', component: <TestimonialAdmin /> },
-  { id: 'downloads', label: 'Downloads', component: <DownloadAdmin /> },
+  { id: "slider", label: "Slider", component: <SliderAdmin /> },
+  { id: "students", label: "Students", component: <StudentAdmin /> },
+  { id: "attendance", label: "Attendance", component: <AttendanceAdmin /> },
+  { id: "test-results", label: "Test Results", component: <TestResultAdmin /> },
+  { id: "results", label: "Results", component: <ResultAdmin /> },
+  { id: "gallery", label: "Gallery", component: <GalleryAdmin /> },
+  {
+    id: "gallery-categorized",
+    label: "Gallery Categorized",
+    component: <GalleryAdminn />,
+  },
+  {
+    id: "testimonials",
+    label: "Testimonials",
+    component: <TestimonialAdmin />,
+  },
+  { id: "downloads", label: "Downloads", component: <DownloadAdmin /> },
 ];
 
 const AdminPanel = () => {
-  const [activeTab, setActiveTab] = useState('slider');
+  const [activeTab, setActiveTab] = useState("slider");
 
   const renderTabContent = () => {
     const tab = TABS.find((t) => t.id === activeTab);
@@ -35,8 +49,8 @@ const AdminPanel = () => {
             onClick={() => setActiveTab(tab.id)}
             className={`px-4 py-2 rounded-md text-sm font-medium ${
               activeTab === tab.id
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
+                ? "bg-blue-600 text-white"
+                : "bg-gray-100 hover:bg-gray-200 text-gray-800"
             }`}
           >
             {tab.label}
@@ -51,8 +65,8 @@ const AdminPanel = () => {
       <div className="flex justify-end mt-8">
         <button
           onClick={() => {
-            localStorage.removeItem('admin_logged_in');
-            window.location.href = '/admin-login';
+            localStorage.removeItem("admin_logged_in");
+            window.location.href = "/admin-login";
           }}
           className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
         >
