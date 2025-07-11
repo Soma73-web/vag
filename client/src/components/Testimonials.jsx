@@ -59,19 +59,27 @@ const Testimonials = () => {
 
   if (loading)
     return (
-      <div className="text-center py-10 text-gray-500">
-        Loading testimonials...
-      </div>
+      <section className="py-20 bg-white scroll-mt-24">
+        <div className="max-w-6xl mx-auto px-4">
+          <LoadingSpinner message="Our success stories are loading..." />
+        </div>
+      </section>
     );
   if (testimonials.length === 0)
     return (
-      <div className="text-center py-10 text-gray-500">
-        No testimonials found.
-      </div>
+      <section className="py-20 bg-white scroll-mt-24">
+        <div className="max-w-6xl mx-auto px-4">
+          <EmptyState
+            icon="🎬"
+            title="Success Stories Coming Soon"
+            message="We're collecting inspiring stories from our achievers. Amazing testimonials will be here soon!"
+          />
+        </div>
+      </section>
     );
 
   return (
-    <section id="testimonials" className="pt-28 pb-16 bg-white scroll-mt-24">
+    <section id="testimonials" className="py-20 bg-white scroll-mt-24">
       <div className="max-w-6xl mx-auto px-4">
         {/* ───── New Styled Heading ───── */}
         <div className="text-center mb-10">
