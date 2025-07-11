@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import logo from '../assets/logo.png';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const Header = () => {
   const location = useLocation();
@@ -9,15 +9,15 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: "Director's Message", path: '/directors-message' },
-    { name: 'Courses', path: '/', scrollTo: 'courses' },
-    { name: 'Results', path: '/results' },
-    { name: 'Gallery', path: '/gallery' },
-    { name: 'Downloads', path: '/downloads' },
-    { name: 'Testimonials', path: '/', scrollTo: 'testimonials' },
-    { name: 'Contact', path: '/contact' },
-    { name: 'About Us', path: '/about' },
+    { name: "Home", path: "/" },
+    { name: "Director's Message", path: "/directors-message" },
+    { name: "Courses", path: "/", scrollTo: "courses" },
+    { name: "Results", path: "/results" },
+    { name: "Gallery", path: "/gallery" },
+    { name: "Downloads", path: "/downloads" },
+    { name: "Testimonials", path: "/", scrollTo: "testimonials" },
+    { name: "Contact", path: "/contact" },
+    { name: "About Us", path: "/about" },
   ];
 
   const handleNavClick = (link) => {
@@ -54,13 +54,21 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Enquire Now Button (Desktop) */}
-        <Link
-          to="/contact"
-          className="hidden md:inline-block bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold text-sm transition"
-        >
-          Enquire Now
-        </Link>
+        {/* Desktop Action Buttons */}
+        <div className="hidden md:flex gap-3">
+          <Link
+            to="/student-login"
+            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold text-sm transition"
+          >
+            Student Login
+          </Link>
+          <Link
+            to="/contact"
+            className="bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold text-sm transition"
+          >
+            Enquire Now
+          </Link>
+        </div>
       </div>
 
       {/* Mobile Menu */}
