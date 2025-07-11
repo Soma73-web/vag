@@ -41,11 +41,15 @@ const HomeSlider = () => {
   };
 
   return (
-    <div>
-      {" "}
-      {/* Removed extra padding */}
+    <div className="mb-8">
       {loading ? (
-        <p className="text-center py-8 text-gray-500">Loading slider…</p>
+        <LoadingSpinner message="Our team is setting up the latest showcase..." />
+      ) : images.length === 0 ? (
+        <EmptyState
+          icon="🖼️"
+          title="Showcase Coming Soon"
+          message="Our team is working on bringing you the latest updates and highlights"
+        />
       ) : (
         <div className="w-full max-w-screen-2xl mx-auto overflow-hidden">
           <Slider {...settings}>
