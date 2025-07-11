@@ -56,9 +56,15 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-white shadow z-50 h-[96px]">
+    <header className="fixed top-0 left-0 w-full bg-white backdrop-blur-sm bg-opacity-95 shadow-lg border-b border-gray-100 z-50 h-[96px]">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <img src={logo} alt="VAGUS Logo" className="h-16 object-contain" />
+        <Link to="/" className="flex items-center">
+          <img
+            src={logo}
+            alt="VAGUS Logo"
+            className="h-16 object-contain hover:scale-105 transition-transform duration-200"
+          />
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex gap-6 text-sm font-medium">
