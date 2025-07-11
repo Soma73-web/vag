@@ -56,16 +56,20 @@ const Gallery = () => {
 
   if (images.length === 0) {
     return (
-      <section className="pt-24 pb-16 bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4 text-center text-lg text-gray-500">
-          No images found in the gallery.
+      <section className="py-20 bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4">
+          <EmptyState
+            icon="📸"
+            title="Gallery Loading Soon"
+            message="Our photography team is capturing beautiful moments. Check back soon for amazing visuals!"
+          />
         </div>
       </section>
     );
   }
 
   return (
-    <section id="gallery" className="pt-28 pb-20 bg-white scroll-mt-24">
+    <section id="gallery" className="py-20 bg-white scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-10">
           <div className="flex items-center justify-center gap-4 mb-2">
