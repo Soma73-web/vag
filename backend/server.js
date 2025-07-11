@@ -65,9 +65,49 @@ app.use("/api/students", studentRoutes);
 app.use("/api/admin", adminStudentRoutes);
 app.use("/api/events", eventRoutes);
 
-// Default route
+// Health check route
 app.get("/", (req, res) => {
-  res.send("NEET Academy API is running");
+  res.json({
+    message: "NEET Academy API is running",
+    status: "healthy",
+    timestamp: new Date().toISOString(),
+    version: "1.0.0",
+  });
+});
+
+app.get("/health", (req, res) => {
+  res.json({
+    status: "OK",
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// 404 handler
+app.use("*", (req, res) => {
+  res.status(404).json({
+    error: "Route not found",
+    path: req.originalUrl,
+  });
+});
+
+// Global error handler
+app.use((error, req, res, next) => {
+  console.error("Error:", error);
+
+  if (error.name === "ValidationError") {
+    return res.status(400).json({ error: error.message });
+  }
+
+  if (error.name === "CastError") {
+    return res.status(400).json({ error: "Invalid ID format" });
+  }
+
+  res.status(500).json({
+    error:
+      process.env.NODE_ENV === "production"
+        ? "Internal server error"
+        : error.message,
+  });
 });
 
 // Sync Sequelize models (Optional)
