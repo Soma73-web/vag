@@ -1,23 +1,25 @@
-// models/Download.js
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+module.exports = (sequelize, DataTypes) => {
+  const Download = sequelize.define(
+    "Download",
+    {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      file: {
+        type: DataTypes.BLOB("long"),
+        allowNull: false,
+      },
+      file_type: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+    },
+    {
+      tableName: "downloads",
+      timestamps: false,
+    },
+  );
 
-const Download = sequelize.define('Download', {
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  file: {
-    type: DataTypes.BLOB('long'),
-    allowNull: false
-  },
-  file_type: {
-    type: DataTypes.STRING,
-    allowNull: false
-  }
-}, {
-  tableName: 'downloads',
-  timestamps: false
-});
-
-module.exports = Download;
+  return Download;
+};
